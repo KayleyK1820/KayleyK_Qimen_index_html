@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>阴盘奇门排盘工具</title>
+    <style>
+        body {
+            font-family: '微软雅黑', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            margin: 10px 0;
+        }
+
+        .pan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .pan-table td {
+            width: 11.1%;
+            height: 100px;
+            border: 1px solid #ccc;
+            text-align: center;
+            vertical-align: top;
+            padding: 5px;
+            background-color: #fff;
+        }
+
+        .palace-number {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .shen {
+            color: #c00;
+        }
+
+        .men {
+            color: #06c;
+        }
+
+        .xing {
+            color: #090;
+        }
+
+        .analysis {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>阴盘奇门排盘工具</h2>
+        
+        <div class="input-group">
+            <label>公历时间：</label>
+            <input type="datetime-local" id="datetime">
+            <button onclick="calculatePan()">排盘</button>
+        </div>
+
+        <table class="pan-table" id="qimenPan"></table>
+
+        <div class="analysis" id="analysis">
+            <h3>解盘要点：</h3>
+            <div id="analysisContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // 基础数据
+        const SHEN = ['值符', '腾蛇', '太阴', '六合', '白虎', '玄武', '九地', '九天'];
+        const MEN = ['休门', '死门', '伤门', '杜门', '', '开门', '惊门', '生门', '景门'];
+        const XING = ['天蓬', '天任', '天冲', '天辅', '天英', '天芮', '天柱', '天心'];
+        const DI_ZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+
+        function calculatePan() {
+            const dateTime = document.getElementById('datetime').value;
+            const date = new Date(dateTime);
+            
+            // 此处应添加完整的排盘算法（示例简化版）
+            const panData = generateDemoPan(); // 生成演示数据
+            
+            renderPan(panData);
+            analyzePan(panData);
+        }
+
+        function generateDemoPan() {
+            // 示例数据，实际应通过排盘算法生成
+            return [
+                { shen: '值符', men: '休门', xing: '天蓬', dizhi: '子' },
+                { shen: '九天', men: '生门', xing: '天任', dizhi: '丑' },
+                // 其他宫位数据...
+            ];
+        }
+
+        function renderPan(data) {
+            const table = document.getElementById('qimenPan');
+            table.innerHTML = '';
+            
+            // 创建九宫格布局
+            let html = '<tr>';
+            for (let i = 0; i < 9; i++) {
+                html += `<td>
+                    <div class="palace-number">${i+1}</div>
+                    <div class="shen">${data[i]?.shen || ''}</div>
+                    <div class="men">${data[i]?.men || ''}</div>
+                    <div class="xing">${data[i]?.xing || ''}</div>
+                    <div>${data[i]?.dizhi || ''}</div>
+                </td>`;
+                if ((i+1) % 3 === 0 && i !== 8) html += '</tr><tr>';
+            }
+            html += '</tr>';
+            table.innerHTML = html;
+        }
+
+        function analyzePan() {
+            const analysis = [
+                '当前格局分析：',
+                '- 值符落坎宫，主事态明朗',
+                '- 休门当令，宜谈判和解',
+                '- 天蓬星入局，注意风险控制'
+            ].join('<br>');
+            document.getElementById('analysisContent').innerHTML = analysis;
+        }
+
+        // 初始化默认时间
+        document.getElementById('datetime').value = new Date().toISOString().slice(0,16);
+    </script>
+</body>
+</html>
